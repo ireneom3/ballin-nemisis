@@ -5,7 +5,7 @@
 	import flash.display.MovieClip;
 	import flash.display.SimpleButton;
 	
-	public class moveButton extends MovieClip
+	public class MoveButton extends MovieClip
 	{
 		//*************************
 		// Properties:
@@ -13,6 +13,7 @@
 		public var player_x:Number = 0;
 		public var player_y:Number = 0;
 		public var move_cancel:Boolean = false;
+		public var player_selected:Boolean = false;
 		
 		// Animation
 		public var speed:Number = 7;
@@ -30,16 +31,18 @@
 			trace("Player position : ( " + player_x + "," + player_y + " )\n");
 			
 			// Respond to mouse events
-			move_button.addEventListener(MouseEvent.CLICK,moveBtnClick,false,0,true);
+			move_button.addEventListener(MouseEvent.CLICK,moveBtn,false,0,true);
 		
+			player.addEventListener(MouseEvent.MOUSE_DOWN,playerSelect,false,0,true);
+			player.addEventListener(MouseEvent.MOUSE_UP,playerMove,false,0,true);
 			// Capture clicks on the stage
-			stage.addEventListener(MouseEvent.MOUSE_DOWN,movePlayer);
+			//stage.addEventListener(MouseEvent.MOUSE_DOWN,movePlayer);
 	
 			// Update screen every frame
 			//addEventListener(Event.ENTER_FRAME,enterFrameHandler);
 		}
 		
-		protected function moveBtnClick(event:MouseEvent):void
+		protected function moveBtn(event:MouseEvent):void
 		{
 			if( event.target == move_button && move_cancel == false ){
 				move_area.visible = true;
@@ -49,10 +52,21 @@
 				move_cancel = false;
 			}
 		}
-		
-		protected function movePlayer(event:MouseEvent):void
+		protected function playerMove(event:MouseEvent):void
 		{
-			
+			player.stopDrag();
+			player_selected == false;
+		}
+		protected function playerSelect(event:MouseEvent):void
+		{
+			if(event.target == player && player_selected == false){
+				player.startDrag();
+				player_selected == true;
+				
+			}else {
+				
+			}
+/*
 			if(event.target == move_area){
 				player_x = root.mouseX;
 				player_y = root.mouseY;
@@ -68,7 +82,11 @@
 			}else{
 				trace("You can only move to areas highlighted");
 			}
+		
+		*/	
 		}
+		
+		
 		
 		
 	}
